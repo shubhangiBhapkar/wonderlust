@@ -3,10 +3,12 @@ const app=express();
 const mongoose=require("mongoose");
 const listing=require("./models/listing");
 const path = require('path');
+const methodOverride=require("method-override")
 
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
 app.use(express.urlencoded({extended:true}))
+app.use(methodOverride("_method"));
 
 MONGO_URL="mongodb://127.0.0.1:27017/wonderlust";
 main().then(()=>{
@@ -42,7 +44,7 @@ app.get("/listing/:id", async(req,res)=>{
 //CREATE ROUTE
 app.post("/listing",async (req,res)=>{
     // let {title,description,image,price,country,location}=req.body;
-     const newListing=new listing(req.body.listing) 
+     const newListing=new listing(req.body.Listing) 
      await newListing.save();
      //console.log(req.body.listing)
      res.redirect('/listing');
@@ -52,8 +54,15 @@ app.post("/listing",async (req,res)=>{
 app.get("/listing/:id/edit",async(req,res)=>{
     let {id}=req.params;
     const Listing=await listing.findById(id);
-    console.log(Listing)
+   // console.log(Listing)
     res.render("listings/edit",{Listing});
+})
+
+//UPDATE ROUTE
+app.put("/listing/:id", async(req,res)=>{
+    let{id}=req.params;
+    await listing.findByIdAndUpdate(id,{...req.body.Listing});
+    res.redirect("/listing");
 })
 
 // app.get("/test",async(req,res)=>{
