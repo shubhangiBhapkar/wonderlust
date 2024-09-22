@@ -6,12 +6,13 @@
     <title>Wanderlust</title>
 </head>
 <body>
+    <h3>Listing Details</h3>
     <ul>
-        <h4><li><%=Listing.title%></li></h4>
-        <h4><li><%=Listing.description%></li></h4>
-        <h4><li><%=Listing.price%></li></h4>
-        <h4><li><%=Listing.location%></li></h4>
-        <h4><li><%=Listing.country%></li></h4>
+        <li><strong>Title:</strong> <%= Listing.title %></li>
+        <li><strong>Description:</strong> <%= Listing.description %></li>
+        <li><strong>Price:</strong> &#8377;<%= Listing.price.toLocaleString("en-IN") %></li>
+        <li><strong>Location:</strong> <%= Listing.location %></li>
+        <li><strong>Country:</strong> <%= Listing.country %></li>
     </ul>
 </body>
 </html>

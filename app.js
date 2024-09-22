@@ -18,21 +18,36 @@ async function main(){
    await mongoose.connect(MONGO_URL);
 }
 
+
 //Index Route
 app.get("/listing",async(req,res)=>{
     const allListing=await listing.find();
     //console.log(allListing)
-    res.render('listings/index',{allListing});
-    
+    res.render('listings/index',{allListing});  
+})
+
+//new
+app.get("/listing/new",(req,res)=>{
+    res.render("listings/new.ejs");
 })
 
 //READ 
 app.get("/listing/:id", async(req,res)=>{
     let {id}=req.params;
     const Listing=await listing.findById(id);
-    console.log(Listing);
-    res.render("listing/show.ejs",{Listing})
+    //console.log(Listing);
+    res.render("listings/show.ejs",{Listing})
 })
+
+//CREATE ROUTE
+app.post("/listing",async (req,res)=>{
+    // let {title,description,image,price,country,location}=req.body;
+     const newListing=new listing(req.body.listing) 
+     await newListing.save();
+     //console.log(req.body.listing)
+     res.redirect('/listing');
+ });
+
 // app.get("/test",async(req,res)=>{
 //    const sampleListing=new listing({
 //     title:"shubhangis house",
