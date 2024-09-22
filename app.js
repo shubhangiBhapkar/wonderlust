@@ -48,6 +48,14 @@ app.post("/listing",async (req,res)=>{
      res.redirect('/listing');
  });
 
+ //EDIT ROUTE
+app.get("/listing/:id/edit",async(req,res)=>{
+    let {id}=req.params;
+    const Listing=await listing.findById(id);
+    console.log(Listing)
+    res.render("listings/edit",{Listing});
+})
+
 // app.get("/test",async(req,res)=>{
 //    const sampleListing=new listing({
 //     title:"shubhangis house",
