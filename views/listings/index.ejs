@@ -1,15 +1,28 @@
 <% layout('/layouts/boilerplate') -%>
-<body>
-    <h3>All Listings</h3>
-    <form method="GET" action="/listing/new">
-        <button>Add new Listing</button>
-    </form>
-   
-    <ul>
-    <% for(let listing of allListing){ %>
-         <h5><a href="/listing/<%=listing._id%>"><li><%= listing.title%></li></a></h5>
-         <h5><a href="/listing/<%=listing._id%>"><li><%= listing.title%></li></a></h5>
-   <% }%>
-</ul>
-</body>
 
+    <body>
+        <h3>All Listings</h3>
+        <!-- <form method="GET" action="/listing/new">
+            <button>Add new Listing</button>
+        </form> -->
+        <div class="row row-cols-lg-3 row-cols-md-2 row-cols-sm-1">
+            <% for(let listing of allListing){ %>
+                <a href="/listing/<%=listing._id%>" class="listing-link">
+                    <div class="card col">
+                        <img src="https://images.unsplash.com/photo-1480796927426-f609979314bd?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTV8fHRva3lvfGVufDB8fDB8fHww&auto=format&fit=crop&w=800&q=60"
+                            style="height:20rem" class="card-img-top" alt="listing_image" />
+                        
+                            <div class="card-body">
+                                <p class="card-text">
+                                    <%= listing.title %><br>
+                                        &#8377;<%= Number(listing.price).toLocaleString("en-IN") %>/night
+                                </p>
+                            </div>
+                        
+                    </div>
+                </a>
+                <% }%>
+        </div>
+
+
+    </body>
