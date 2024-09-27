@@ -1,26 +1,34 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Wanderlust</title>
-</head>
-<body>
-    <h3>Listing Details</h3>
-    <ul>
-        <li><strong>Title:</strong> <%= Listing.title %></li>
-        <li><strong>Description:</strong> <%= Listing.description %></li>
-        <li><strong>Price:</strong> &#8377;<%= Listing.price.toLocaleString("en-IN") %></li>
-        <li><strong>Location:</strong> <%= Listing.location %></li>
-        <li><strong>Country:</strong> <%= Listing.country %></li>
-        
-    </ul>
-    
-       <a href="/listing/<%=Listing._id%>/edit">Edit Listing</a>
-       <br><br>
-        <form method="POST" action="/listing/<%= Listing._id %>">
-            <button>Delete listing</button>
-        </form>
-    
-</body>
-</html>
+<% layout('/layouts/boilerplate') -%>
+
+    <body>
+        <div class="row">
+            <div class="col-8 offset-2">
+                <h3>Listing Details</h3>
+            </div>
+
+            <div class="card col-6 offset-2 show-img">
+                <img src="https://images.unsplash.com/photo-1480796927426-f609979314bd?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTV8fHRva3lvfGVufDB8fDB8fHww&auto=format&fit=crop&w=800&q=60"
+                    class="card-img-top" alt="listing-image">
+
+                <div class="card-body">
+                    <p class="card-text mt-3">
+                        <b>
+                            <%= Listing.title %>
+                        </b><br>
+                        <%= Listing.description %><br>
+                            &#8377;<%= Listing.price.toLocaleString("en-IN")%><br>
+                                <%= Listing.location %><br>
+                                    <%= Listing.country %><br>
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div class="btns">
+            <a href="/listing/<%=Listing._id%>/edit" class="btn col-1 offset-2">Edit</a>
+            <form method="POST" action="/listing/<%= Listing._id %> ">
+                <button class="btn col-1 offset-2">Delete</button>
+            </form>
+        </div>
+        </div>
+    </body>

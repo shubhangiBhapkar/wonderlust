@@ -1,41 +1,52 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Wanderlust</title>
-</head>
+<% layout('/layouts/boilerplate') -%>
+
 <body>
-    <h3>Edit Your Listing</h3>
-    <form method="POST" action="/listing/<%= Listing._id %>?_method=PUT">
-        <fieldset>
-            <legend>Edit Listing Details</legend>
-            <label for="title">Title:</label>
-            <input type="text" id="title" name="Listing[title]" value="<%= Listing.title %>" required>
-            <br><br>
+    <div class="row mt-3" >
+        <div class="col-8 offset-2">
 
-            <label for="description">Description:</label>
-            <input type="text" id="description" name="Listing[description]" value="<%= Listing.description %>" required>
-            <br><br>
+            <form method="POST" action="/listing/<%= Listing._id %>?_method=PUT">
 
-            <label for="image">Image URL:</label>
-            <input type="text" id="image" name="Listing[image]" value="<%= Listing.image.url %>" required>
-            <br><br>
+                <h3>Edit Listing Details</h3>
+                <div class="mb-3">
+                    <label for="title" class="form-label">Title:</label>
+                    <input type="text" id="title" name="Listing[title]" value="<%= Listing.title %>"
+                        class="form-control" required>
+                </div>
 
-            <label for="price">Price:</label>
-            <input type="number" id="price" name="Listing[price]" value="<%= Listing.price %>" required>
-            <br><br>
+                <div class="mb-3">
+                    <label for="description" class="form-label">Description:</label>
+                    <textarea id="description" name="Listing[description]" value="<%= Listing.description %>"
+                        class="form-control" required></textarea>
+                </div>
 
-            <label for="country">Country:</label>
-            <input type="text" id="country" name="Listing[country]" value="<%= Listing.country %>" required>
-            <br><br>
+                <div class="mb-3">
+                    <label for="image" class="form-label">Image URL:</label>
+                    <input type="text" id="image" name="Listing[image]" value="<%= Listing.image.url %>"
+                        class="form-control" required>
+                </div>
 
-            <label for="location">Location:</label>
-            <input type="text" id="location" name="Listing[location]" value="<%= Listing.location %>" required>
-            <br><br>
-            
-            <button type="submit">Edit</button>
-        </fieldset>
-    </form>
+                <div class="row">
+                <div class="mb-3 col-md-4">
+                    <label for="price" class="form-label"> Price:</label>
+                    <input type="number" id="price" name="Listing[price]" value="<%= Listing.price %>"
+                        class="form-control" required>
+                </div>
+
+                <div class="mb-3 col-md-8">
+                    <label for="country" class="form-label">Country:</label>
+                    <input type="text" id="country" name="Listing[country]" value="<%= Listing.country %>"
+                        class="form-control" required>
+                </div>
+                </div>
+
+                <div class="mb-3">
+                    <label for="location" class="form-label">Location:</label>
+                    <input type="text" id="location" name="Listing[location]" value="<%= Listing.location %>"
+                        class="form-control" required>
+                </div>
+                
+                <button type="submit" class="btn btn-dark edit-btn mt-3">Edit</button>
+            </form>
+        </div>
+    </div>
 </body>
-</html>
