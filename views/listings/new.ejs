@@ -11,28 +11,43 @@
         </div>
         <div class="mb-3">
             <label for="description" class="form-label">Description</label>
-            <textarea name="Listing[description]" placeholder="Enter description" class="form-control" required>
-            </textarea>
+            <textarea name="Listing[description]" placeholder="Enter description" class="form-control" required></textarea>
+            <div class="invalid-feedback">
+                Please provide a short description.
+            </div>
         </div>
+        
         <div class="mb-3">
             <label for="image" class="form-label">Image</label>
             <input type="text" name="Listing[image]" placeholder="Enter image URL/link" class="form-control" >
+            <div class="invalid-feedback">
+                please provide image link .
+              </div>
         </div>
 
         <div class="row">
             <div class="mb-3 col-md-4">
                 <label for="price" class="form-label">Price</label>
                 <input type="number" name="Listing[price]" placeholder="1200" class="form-control" required>
+                <div class="invalid-feedback">
+                    Please provide correct price.
+                  </div>
             </div>
             <div class="mb-3 col-md-8">
                 <label for="country" class="form-label">Country</label>
                 <input type="text" name="Listing[country]" placeholder="India" class="form-control" required>
+                <div class="invalid-feedback">
+                    country needed.
+                  </div>
             </div>
         </div>
         
         <div class="mb-3">
             <label for="location" class="form-label"> Location</label>
             <input type="text" name="Listing[location]" placeholder="Jaipur,Rajasthan" class="form-control" required>
+            <div class="invalid-feedback">
+                location needed.
+              </div>
         </div>
         <br>
         <button class="btn btn-dark add-btn">Add</button>
