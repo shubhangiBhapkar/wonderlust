@@ -22,8 +22,6 @@ main().then(()=>{
 async function main(){
    await mongoose.connect(MONGO_URL);
 }
-
-
 //Index Route
 app.get("/listing",async(req,res)=>{
     const allListing=await listing.find();
@@ -31,12 +29,12 @@ app.get("/listing",async(req,res)=>{
     res.render('listings/index',{allListing});  
 })
 
-//new
+//NEW ROUTE
 app.get("/listing/new",(req,res)=>{
     res.render("listings/new.ejs");
 })
 
-//READ 
+//SHOW-ROUTE    
 app.get("/listing/:id", async(req,res)=>{
     let {id}=req.params;
     const Listing=await listing.findById(id);
@@ -44,31 +42,39 @@ app.get("/listing/:id", async(req,res)=>{
     res.render("listings/show.ejs",{Listing})
 })
 
-//CREATE ROUTE
-app.post("/listing",async (req,res)=>{
-    // let {title,description,image,price,country,location}=req.body;
+//CREATE-ROUTE
+app.post("/listing",async (req,res,next)=>{
+    try{
+        // let {title,description,image,price,country,location}=req.body;
      const newListing=new listing(req.body.Listing) 
      await newListing.save();
      //console.log(req.body.listing)
      res.redirect('/listing');
+    }catch(err){
+        next(err);
+    }
  });
 
- //EDIT ROUTE
+ //EDIT-ROUTE
 app.get("/listing/:id/edit",async(req,res)=>{
-    let {id}=req.params;
+    try{
+        let {id}=req.params;
     const Listing=await listing.findById(id);
    // console.log(Listing)
     res.render("listings/edit",{Listing});
+    }catch(err){
+        next(err);
+    }
 })
 
-//UPDATE ROUTE
+//UPDATE-ROUTE
 app.put("/listing/:id", async(req,res)=>{
     let{id}=req.params;
     await listing.findByIdAndUpdate(id,{...req.body.Listing});
     res.redirect("/listing");
 })
 
-//DELETE Route
+//DELETE-SRoute
 app.post("/listing/:id", async (req,res)=>{
     let {id}=req.params;
     const del=await listing.findByIdAndDelete(id);
@@ -92,6 +98,9 @@ app.get("/",(req,res)=>{
     res.send("hi,working")
 })
 
+app.use((err,req,res,next)=>{
+    res.send("Something Went Wrong!");
+})
 app.listen(8080,()=>{
     console.log("Listening on port 8080");
 })
