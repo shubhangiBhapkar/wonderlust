@@ -7,6 +7,7 @@ const methodOverride = require("method-override")
 const ejsMate = require("ejs-mate");
 const wrapAsync = require("./utils/wrapAsync.js");
 const ExpressError = require("./utils/ExpressError.js");
+const{listingSchema}=require("./schema.js");
 
 app.set("view engine", 'ejs');
 app.set("views", path.join(__dirname, "views"));
@@ -24,6 +25,18 @@ main().then(() => {
 async function main() {
     await mongoose.connect(MONGO_URL);
 }
+
+// Schema validation middleware
+const validateListing=(req,res,next)=>{
+    let {error}=listingSchema.validate(req.body);
+    if(error){
+        let errMsg=error.details.map((el)=>el.message).join(',');
+        throw new ExpressError(400,errMsg);
+    }else{
+        next();
+    }
+}
+
 //Index Route
 app.get("/listing", wrapAsync(async (req, res) => {
     const allListing = await listing.find();
@@ -45,12 +58,9 @@ app.get("/listing/:id", wrapAsync(async (req, res) => {
 }));
 
 //CREATE-ROUTE
-app.post("/listing", wrapAsync(async (req, res, next) => {
+app.post("/listing", validateListing,wrapAsync(async (req,res) => {
     // let {title,description,image,price,country,location}=req.body;
-    if(!req.body.Listing){
-        throw new ExpressError(400,"send valid data for listing")
-    }
-    const newListing = new listing(req.body.Listing)
+    const newListing = new listing(req.body.Listing) 
     await newListing.save();
     //console.log(req.body.listing)
     res.redirect("/listing");
@@ -65,7 +75,7 @@ app.get("/listing/:id/edit", wrapAsync(async (req, res) => {
 }))
 
 //UPDATE-ROUTE
-app.put("/listing/:id", wrapAsync(async (req, res) => {
+app.put("/listing/:id",validateListing, wrapAsync(async (req, res) => {
     let { id } = req.params;
     if(!req.body.Listing){
         throw new ExpressError(400,"send valid data for listing")
