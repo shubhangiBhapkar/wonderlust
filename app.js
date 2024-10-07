@@ -8,7 +8,7 @@ const ejsMate = require("ejs-mate");
 const wrapAsync = require("./utils/wrapAsync.js");
 const ExpressError = require("./utils/ExpressError.js");
 const{listingSchema}=require("./schema.js");
-const Review=require("./models/listing.js");
+const Review=require("./models/review.js");
 
 
 app.set("view engine", 'ejs');
@@ -113,9 +113,9 @@ app.post("/listing/:id/reviews", async(req,res)=>{
    let newReview=new Review(req.body.review);
 
    RevListing.reviews.push(newReview);
-   
-   await newReview.save();
-   await listing.save();
+
+    await newReview.save();   
+    await RevListing.save();
 
    console.log("new review is saved");
    res.send("Review is saved");
