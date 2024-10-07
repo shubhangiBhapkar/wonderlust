@@ -1,13 +1,15 @@
 const express = require("express");
 const app = express();
 const mongoose = require("mongoose");
-const listing = require("./models/listing");
+const listing = require("./models/listing.js");
 const path = require('path');
 const methodOverride = require("method-override")
 const ejsMate = require("ejs-mate");
 const wrapAsync = require("./utils/wrapAsync.js");
 const ExpressError = require("./utils/ExpressError.js");
 const{listingSchema}=require("./schema.js");
+const Review=require("./models/listing.js");
+
 
 app.set("view engine", 'ejs');
 app.set("views", path.join(__dirname, "views"));
@@ -102,7 +104,23 @@ app.post("/listing/:id", wrapAsync(async (req, res) => {
     const del = await listing.findByIdAndDelete(id);
     console.log(del)
     res.redirect("/listing")
-}))
+}));
+
+// Reviews
+// POST Route
+app.post("/listing/:id/reviews", async(req,res)=>{
+   let RevListing= await listing.findById(req.params.id);
+   let newReview=new Review(req.body.review);
+
+   RevListing.reviews.push(newReview);
+   
+   await newReview.save();
+   await listing.save();
+
+   console.log("new review is saved");
+   res.send("Review is saved");
+
+});
 
 // app.get("/test",async(req,res)=>{
 //    const sampleListing=new listing({
