@@ -1,22 +1,25 @@
  const Joi = require('joi');
-const listing = require("./models/listing.js");
 
-// module.exports.listingSchema=Joi.object({
-//     listing: Joi.object({
+module.exports.listingSchema=Joi.object({
+    listing : Joi.object({
+        title: Joi.string().required(),
+        description: Joi.string().required(),
+        price: Joi.number().required().min(0),
+        country: Joi.string().required(),
+        location: Joi.string().required(),
+        image: Joi.string().allow("", null)
+    }).required()
+});
+
+// const Joi = require("joi");
+
+// const listingSchema = Joi.object({
+//     Listing: Joi.object({
 //         title: Joi.string().required(),
 //         description: Joi.string().required(),
-//         price: Joi.number().required().min(0),
+//         image: Joi.string().uri(),
+//         price: Joi.number().required(),
 //         country: Joi.string().required(),
-//         location: Joi.string().required(),
-//         image: Joi.string().allow("", null)
+//         location: Joi.string().required()
 //     }).required()
 // });
-
-module.exports.listingSchema = Joi.object({
-    title: Joi.string().required(),
-    description: Joi.string().required(),
-    price: Joi.number().required().min(0),
-    country: Joi.string().required(),
-    location: Joi.string().required(),
-    image: Joi.string().allow("", null)
-});

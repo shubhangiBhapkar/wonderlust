@@ -7,9 +7,9 @@
                     class="needs-validation">
                     <h3>Edit Listing Details</h3>
                     <div class="mb-3">
+                        
                         <label for="title" class="form-label">Title:</label>
-                        <input type="text" id="title" name="Listing[title]" value="<%= Listing.title %>"
-                            class="form-control" required>
+                        <input type="text" id="title" name="Listing[title]" value="<%= Listing.title %>" class="form-control" required>
                         <div class="invalid-feedback">
                             Please provide a Title .
                         </div>
@@ -17,8 +17,8 @@
 
                     <div class="mb-3">
                         <label for="description" class="form-label">Description:</label>
-                        <textarea id="description" name="Listing[description]" value="<%= Listing.description %>"
-                            class="form-control" required></textarea>
+                        <textarea id="description" name="Listing[description]" class="form-control" required><%= Listing.description %></textarea>
+                            
                         <div class="invalid-feedback">
                             Please provide a short description.
                         </div>
