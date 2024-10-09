@@ -28,7 +28,7 @@ async function main() {
     await mongoose.connect(MONGO_URL);
 }
 
-// Schema validation middleware
+// Schema validation middleware - this middleware only use for POST and PUT request
 const validateListing=(req,res,next)=>{
     let {error}=listingSchema.validate(req.body);
     if(error){
@@ -64,9 +64,9 @@ app.get("/listing/new", (req, res) => {
 //SHOW-ROUTE    
 app.get("/listing/:id", wrapAsync(async (req, res) => {
     let {id} = req.params;
-    const Listing = await listing.findById(id);
+    const listingShow = await listing.findById(id).populate("reviews");
     //console.log(Listing);
-    res.render("listings/show.ejs", { Listing })
+    res.render("listings/show.ejs", { listingShow });
 }));
 
 //CREATE-ROUTE
@@ -79,12 +79,12 @@ app.post("/listing",validateListing,wrapAsync(async (req,res) => {
 }));
 
 //EDIT-ROUTE
-app.get("/listing/:id/edit",validateListing,wrapAsync(async (req, res) => {
+app.get("/listing/:id/edit", wrapAsync(async (req, res) => {
     let { id } = req.params;
     const Listing = await listing.findById(id);
-    // console.log(Listing)
-    res.render("listings/edit.ejs",{ Listing });
-}))
+    res.render("listings/edit.ejs", { Listing });
+}));
+
 
 //UPDATE-ROUTE
 // app.put("/listing/:id",validateListing, wrapAsync(async (req, res) => {
@@ -97,7 +97,7 @@ app.get("/listing/:id/edit",validateListing,wrapAsync(async (req, res) => {
 // }))
 
 
-app.put("/listing/:id",wrapAsync(async (req, res) => {
+app.put("/listing/:id",validateListing,wrapAsync(async (req, res) => {
     console.log(req.body); // Log the request body
     let { id } = req.params;
     if (!req.body.Listing) {
@@ -128,8 +128,17 @@ app.post("/listing/:id/reviews",validateReview,wrapAsync(async(req,res)=>{
     await RevListing.save();
 
    console.log("new review is saved");
-   res.send("Review is saved")
+   res.render("listings/show.ejs");
 }));
+
+//Delete Review Route
+app.post("/listing/:id/reviews/:reviewId", wrapAsync(async (req, res) => {
+    let { id, reviewId } = req.params;
+    await listing.findByIdAndUpdate(id, { $pull: { reviews: reviewId } });
+    await Review.findByIdAndDelete(reviewId);
+    res.redirect(`/listing/${id}`); // Change 'listings' to 'listing'
+}));
+
 
 
 // app.get("/test",async(req,res)=>{
@@ -144,7 +153,6 @@ app.post("/listing/:id/reviews",validateReview,wrapAsync(async(req,res)=>{
 //    console.log("saved sample");
 //    res.send("saved")
 // })
-
 
 app.get("/", (req, res) => {
     res.send("hi,working")
