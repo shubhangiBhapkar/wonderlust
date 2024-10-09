@@ -64,9 +64,9 @@ app.get("/listing/new", (req, res) => {
 //SHOW-ROUTE    
 app.get("/listing/:id", wrapAsync(async (req, res) => {
     let {id} = req.params;
-    const listingShow = await listing.findById(id).populate("reviews");
+    const Listing = await listing.findById(id).populate("reviews");
     //console.log(Listing);
-    res.render("listings/show.ejs", { listingShow });
+    res.render("listings/show.ejs", { Listing });
 }));
 
 //CREATE-ROUTE
@@ -109,7 +109,7 @@ app.put("/listing/:id",validateListing,wrapAsync(async (req, res) => {
 
 
 //DELETE-Route
-app.post("/listing/:id", wrapAsync(async (req, res) => {
+app.delete("/listing/:id", wrapAsync(async (req, res) => {
     let { id } = req.params;
     const del = await listing.findByIdAndDelete(id);
     console.log(del)
@@ -132,13 +132,12 @@ app.post("/listing/:id/reviews",validateReview,wrapAsync(async(req,res)=>{
 }));
 
 //Delete Review Route
-app.post("/listing/:id/reviews/:reviewId", wrapAsync(async (req, res) => {
+app.delete("/listing/:id/reviews/:reviewId", wrapAsync(async (req, res) => {
     let { id, reviewId } = req.params;
     await listing.findByIdAndUpdate(id, { $pull: { reviews: reviewId } });
     await Review.findByIdAndDelete(reviewId);
     res.redirect(`/listing/${id}`); // Change 'listings' to 'listing'
 }));
-
 
 
 // app.get("/test",async(req,res)=>{
