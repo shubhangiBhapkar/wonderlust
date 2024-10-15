@@ -13,6 +13,7 @@ const session=require("express-session");
 
 const listings=require("./Route/listing.js");
 const reviews=require("./Route/review.js");
+const flash=require("connect-flash");
 
 app.set("view engine", 'ejs');
 app.set("views", path.join(__dirname, "views"));
@@ -31,7 +32,19 @@ const sessionOptions={
         httpOnly:true
     }
 };
+
+app.get("/", (req, res) => {
+    res.send("hi,i am root!")
+});
+
+
 app.use(session(sessionOptions));
+app.use(flash());
+
+app.use((req,res,next)=>{
+    res.locals.success= req.flash("success");
+    next();
+});
 
 MONGO_URL = "mongodb://127.0.0.1:27017/wonderlust";
 main().then(() => {
@@ -42,11 +55,6 @@ main().then(() => {
 async function main() {
     await mongoose.connect(MONGO_URL);
 }
-
-
-app.get("/", (req, res) => {
-    res.send("hi,i am root!")
-});
 
 //use
 app.use("/listing",listings);//require listings from ./Route/listings.js
