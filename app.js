@@ -11,8 +11,10 @@ const session=require("express-session");
 // const{listingSchema,reviewSchema}=require("./schema.js");
 // const Review=require("./models/review.js");
 
-const listings=require("./Route/listing.js");
-const reviews=require("./Route/review.js");
+const listingRouter=require("./Route/listing.js");
+const reviewRouter=require("./Route/review.js");
+const userRouter=require("./Route/user.js");
+
 const flash=require("connect-flash");
 const passport=require("passport");
 const localStrategy=require("passport-local");
@@ -78,8 +80,9 @@ app.use("/demoUser",async(req,res)=>{
 });
 
 //use
-app.use("/listing",listings);//require listings from ./Route/listings.js
-app.use("/listing/:id/reviews",reviews);//require reviews from ./Route/listings.js
+app.use("/listing",listingRouter);//require listings from ./Route/listings.js
+app.use("/listing/:id/reviews",reviewRouter);//require reviews from ./Route/listings.js
+app.use("/",userRouter); 
 
 app.all("*",(req,res,next)=>{
     next(new ExpressError(404,"Page not Found"));
