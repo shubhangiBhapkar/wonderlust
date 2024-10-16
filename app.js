@@ -2,7 +2,7 @@ const express = require("express");
 const app = express();
 const mongoose = require("mongoose");
 
-const path = require('path');
+const path = require("path");
 const methodOverride = require("method-override")
 const ejsMate = require("ejs-mate");
 const wrapAsync = require("./utils/wrapAsync.js");
@@ -14,6 +14,9 @@ const session=require("express-session");
 const listings=require("./Route/listing.js");
 const reviews=require("./Route/review.js");
 const flash=require("connect-flash");
+const passport=require("passport");
+const localStrategy=require("passport-local");
+const User=require("./models/user.js");
 
 app.set("view engine", 'ejs');
 app.set("views", path.join(__dirname, "views"));
@@ -34,15 +37,23 @@ const sessionOptions={
 };
 
 app.get("/", (req, res) => {
-    res.send("hi,i am root!")
+    res.send("hi,i am root!");
 });
-
 
 app.use(session(sessionOptions));
 app.use(flash());
 
+//configuring strategy
+app.use(passport.initialize());
+app.use(passport.session());
+passport.use(new localStrategy(User.authenticate()));
+
+passport.serializeUser(User.serializeUser());
+passport.deserializeUser(User.deserializeUser());
+
 app.use((req,res,next)=>{
     res.locals.success= req.flash("success");
+    res.locals.error=(req.flash("error"));
     next();
 });
 
@@ -54,7 +65,17 @@ main().then(() => {
 
 async function main() {
     await mongoose.connect(MONGO_URL);
-}
+};
+
+app.use("/demoUser",async(req,res)=>{
+    let fakeUser=new User({
+        email:"student@12gmail.com",
+        username:"shubhangi"
+    });
+    
+   let registerUser= await User.register(fakeUser,"hellow");
+   res.send(registerUser);
+});
 
 //use
 app.use("/listing",listings);//require listings from ./Route/listings.js

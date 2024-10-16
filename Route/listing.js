@@ -33,6 +33,10 @@ router.get("/:id", wrapAsync(async (req, res) => {
     let {id} = req.params;
     const Listing = await listing.findById(id).populate("reviews");
     //console.log(Listing);
+    if(!Listing){
+        req.flash("error","listing Does not exist ");
+        res.redirect("/listings");
+    };
     res.render("listings/show.ejs",{Listing});
 }));
 
@@ -72,7 +76,7 @@ router.delete("/:id", wrapAsync(async(req,res) => {
     let { id } = req.params;
     const del = await listing.findByIdAndDelete(id);
     req.flash("success","listing Deleted");
-    console.log(del)
+    //console.log(del)
     res.redirect("/listing")
 }));
 
