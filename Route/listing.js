@@ -4,6 +4,7 @@ const listing = require("../models/listing.js");
 const wrapAsync = require("../utils/wrapAsync.js");
 const ExpressError = require("../utils/ExpressError.js");
 const{listingSchema}=require("../schema.js");
+const {isLoggedIn}=require("../middleware.js");
 
 // Schema validation middleware - this middleware only use for POST and PUT request
 const validateListing=(req,res,next)=>{
@@ -24,9 +25,9 @@ router.get("/",wrapAsync(async (req, res) => {
 }));
 
 //NEW ROUTE
-router.get("/new",(req,res)=>{
+router.get("/new",isLoggedIn,(req,res)=>{
     res.render("listings/new.ejs");
-})
+});
 
 //SHOW-ROUTE    
 router.get("/:id", wrapAsync(async (req, res) => {
@@ -43,11 +44,13 @@ router.get("/:id", wrapAsync(async (req, res) => {
 //CREATE-ROUTE
 router.post("/",validateListing,wrapAsync(async (req,res) => {
     // let {title,description,image,price,country,location}=req.body;
+   
     const newListing = new listing(req.body.Listing) 
     await newListing.save();
     req.flash("success"," listing created successfully !");
     //console.log(req.body.listing)
     res.redirect("/listing");
+    
 }));
 
 //EDIT-ROUTE
