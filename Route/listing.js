@@ -42,7 +42,7 @@ router.get("/:id", wrapAsync(async (req, res) => {
 }));
 
 //CREATE-ROUTE
-router.post("/",validateListing,wrapAsync(async (req,res) => {
+router.post("/",isLoggedIn,validateListing,wrapAsync(async (req,res) => {
     // let {title,description,image,price,country,location}=req.body;
    
     const newListing = new listing(req.body.Listing) 
@@ -54,7 +54,7 @@ router.post("/",validateListing,wrapAsync(async (req,res) => {
 }));
 
 //EDIT-ROUTE
-router.get("/:id/edit", wrapAsync(async (req, res) => {
+router.get("/:id/edit",isLoggedIn, wrapAsync(async (req, res) => {
     let { id } = req.params;
     const Listing = await listing.findById(id);
     req.flash("success"," listing edited successfully !");
@@ -62,7 +62,7 @@ router.get("/:id/edit", wrapAsync(async (req, res) => {
 }));
 
 //Update route
-router.put("/:id",validateListing,wrapAsync(async (req, res) => {
+router.put("/:id",isLoggedIn,validateListing,wrapAsync(async (req, res) => {
     console.log(req.body); // Log the request body
     let {id} = req.params;
     if (!req.body.Listing) {
@@ -75,7 +75,7 @@ router.put("/:id",validateListing,wrapAsync(async (req, res) => {
 
 
 //DELETE-Route
-router.delete("/:id", wrapAsync(async(req,res) => {
+router.delete("/:id",isLoggedIn, wrapAsync(async(req,res) => {
     let { id } = req.params;
     const del = await listing.findByIdAndDelete(id);
     req.flash("success","listing Deleted");
