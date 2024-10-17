@@ -69,15 +69,16 @@ async function main() {
     await mongoose.connect(MONGO_URL);
 };
 
-app.use("/demoUser",async(req,res)=>{
-    let fakeUser=new User({
-        email:"student@12gmail.com",
-        username:"shubhangi"
-    });
+//fake user
+// app.use("/demoUser",async(req,res)=>{
+//     let fakeUser=new User({
+//         email:"student@12gmail.com",
+//         username:"shubhangi"
+//     });
     
-   let registerUser= await User.register(fakeUser,"hellow");
-   res.send(registerUser);
-});
+//    let registerUser= await User.register(fakeUser,"hellow");
+//    res.send(registerUser);
+// });
 
 //use
 app.use("/listing",listingRouter);//require listings from ./Route/listings.js
