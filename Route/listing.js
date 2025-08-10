@@ -42,14 +42,15 @@ router.get(
         req.flash("error", "listing Does not exist ");
         res.redirect("/listings");
     };
+    console.log(Listing); //printing listing details on console
     res.render("listings/show.ejs", { Listing });
 }));
 
 //CREATE-ROUTE
 router.post("/", isLoggedIn, validateListing, wrapAsync(async (req, res) => {
     // let {title,description,image,price,country,location}=req.body;
-
     const newListing = new listing(req.body.Listing)
+    newListing.owner = req.user._id;  //passport bydefault stores the curruser 
     await newListing.save();
     req.flash("success", " listing created successfully !");
     //console.log(req.body.listing)
