@@ -35,7 +35,10 @@ router.get(
     wrapAsync(async (req, res) => {
     let { id } = req.params;
     const Listing = await listing.findById(id)
-    .populate("reviews")
+    .populate({
+        path: "reviews",
+        populate: { path: "author" } // populate the review's author
+    })
     .populate("owner");
     //console.log(Listing);
     if (!Listing) {
