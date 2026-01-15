@@ -46,7 +46,6 @@ Before setup, make sure you have:
 
 1. **Clone the repository**
 
-```bash
 git clone https://github.com/shubhangiBhapkar/wonderlust.git
 cd wonderlust
 npm install
