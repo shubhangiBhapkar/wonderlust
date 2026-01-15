@@ -34,7 +34,6 @@ JavaScript	Middleware	—
 ├── app.js              # App entry point
 ├── package.json
 └── README.md
-``` :contentReference[oaicite:4]{index=4}
 
 **🚀 Getting Started**
 Prerequisites
